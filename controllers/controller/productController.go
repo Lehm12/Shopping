@@ -35,8 +35,10 @@ func FetchAllProducts(c *gin.Context) {
 
 // FindProduct は 指定したIDの商品情報を取得する
 func FindProduct(c *gin.Context) {
+	// クエリ文字列の取得
 	productIDStr := c.Query("productID")
 
+	// 文字列を10進数と解釈してintで返す
 	productID, _ := strconv.Atoi(productIDStr)
 
 	resultProduct := db.FindProduct(productID)
@@ -47,9 +49,11 @@ func FindProduct(c *gin.Context) {
 
 // AddProduct は 商品をDBへ登録する
 func AddProduct(c *gin.Context) {
+	// c.PostFormでフォームの値を取得 str
 	productName := c.PostForm("productName")
 	productMemo := c.PostForm("productMemo")
 
+	// productの定義してinsertする
 	var product = entity.Product{
 		Name:  productName,
 		Memo:  productMemo,

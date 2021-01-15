@@ -36,7 +36,6 @@ func serve() {
 
 	// ルーターの設定
 	// URLへのアクセスに対して静的ページを返す
-	// StaticFS()
 	router.StaticFS("/shoppingapp", http.Dir("./views/static"))
 
 	// 全ての商品情報のJSONを返す

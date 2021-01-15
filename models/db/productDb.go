@@ -48,6 +48,7 @@ func FindAllProducts() []entity.Product {
 
 	db := open()
 	// select
+	// asc : 昇順
 	db.Order("ID asc").Find(&products)
 
 	// defer 関数がreturnする時に実行される
@@ -62,6 +63,7 @@ func FindProduct(productID int) []entity.Product {
 
 	db := open()
 	// select
+	// ソートされた中で最初にproductIDと合致する商品を取得
 	db.First(&product, productID)
 	defer db.Close()
 
