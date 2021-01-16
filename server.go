@@ -12,8 +12,6 @@ import (
 
 	// MySQL用ドライバ
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	//_ "Users/haradayoshihiro/go/src/github.com/jinzhu/gorm/dialects/mysql"
-	//_ "github.com/jinzhu/gorm/tree/master/dialects/mysql"
 
 	// コントローラー
 	// controller "./controllers/controller"
