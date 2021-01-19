@@ -55,9 +55,29 @@ func AddProduct(c *gin.Context) {
 
 	// productの定義してinsertする
 	var product = entity.Product{
-		Name:  productName,
-		Memo:  productMemo,
-		State: NotPurchased,
+		Name:    productName,
+		Memo:    productMemo,
+		Default: 0,
+		State:   NotPurchased,
+	}
+
+	db.InsertProduct(&product)
+}
+
+// AddDefaultProduct は デフォルト商品をDBへ登録する
+// デフォルト商品：定期的に買う商品
+func AddDefaultProduct(c *gin.Context) {
+	// c.PostFormでフォームの値を取得 str
+	productName := "納豆"
+	productMemo := "定期的に買う商品"
+	productDefault := 1
+
+	// productの定義してinsertする
+	var product = entity.Product{
+		Name:    productName,
+		Memo:    productMemo,
+		Default: productDefault,
+		State:   NotPurchased,
 	}
 
 	db.InsertProduct(&product)
@@ -85,8 +105,18 @@ func ChangeStateProduct(c *gin.Context) {
 // DeleteProduct は 商品情報をDBから削除する
 func DeleteProduct(c *gin.Context) {
 	productIDStr := c.PostForm("productID")
+	productDefaultstr := c.PostForm("productDefault")
+	productStatestr := c.PostForm("productState")
 
 	productID, _ := strconv.Atoi(productIDStr)
+	productDefault, _ := strconv.Atoi(productDefaultstr)
+	productState, _ := strconv.Atoi(productStatestr)
 
-	db.DeleteProduct(productID)
+	// デフォルト商品でないなら削除 デフォルトなら商品状態を変更
+	if productDefault == 1 {
+		productState = NotPurchased
+		db.UpdateStateProduct(productID, productState)
+	} else {
+		db.DeleteProduct(productID)
+	}
 }

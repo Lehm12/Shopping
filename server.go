@@ -42,6 +42,9 @@ func serve() {
 	// １つの商品情報の状態のJSONを返す
 	router.GET("/fetchProduct", controller.FindProduct)
 
+	// デフォルト商品情報をDBへ登録する
+	router.POST("/addDefaultProduct", controller.AddDefaultProduct)
+
 	// 商品情報をDBへ登録する
 	router.POST("/addProduct", controller.AddProduct)
 

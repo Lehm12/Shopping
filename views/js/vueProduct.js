@@ -10,6 +10,8 @@ new Vue({
         productName: '',
         // メモ
         productMemo: '',
+        //デフォルトかどうか
+        productDefault: 0,
         // 商品情報の状態
         current: -1,
         // 商品情報の状態一覧
@@ -47,6 +49,7 @@ new Vue({
 
     // インスタンス作成時の処理
     created: function() {
+        this.doAddDefaultProduct()
         this.doFetchAllProducts()
     },
 
@@ -84,6 +87,22 @@ new Vue({
 
                     // spliceを使うとdataプロパティの配列の要素をリアクティブに変更できる
                     this.products.splice(index, 1, resultProduct[0])
+                }
+            })
+        },
+         // デフォルト商品情報を登録する
+         doAddDefaultProduct() {
+            // デフォルト商品の登録
+            axios.post('/addDefaultProduct')
+            .then(response => {
+                if (response.status != 200) {
+                    throw new Error('レスポンスエラー')
+                } else {
+                    // 商品情報を取得する
+                    this.doFetchAllProducts()
+
+                    // 入力値を初期化する
+                    this.initInputValue()
                 }
             })
         },
@@ -129,6 +148,9 @@ new Vue({
             // サーバへ送信するパラメータ
             const params = new URLSearchParams();
             params.append('productID', product.id)
+            params.append('productDefault', product.default)
+            // product.stateはデフォルト商品の時使用するため送信する
+            params.append('productState', product.state)
 
             axios.post('/deleteProduct', params)
             .then(response => {
@@ -145,6 +167,7 @@ new Vue({
             this.current = -1
             this.productName = ''
             this.productMemo = ''
+            this.productDefault = 0
         }
     }
 })
